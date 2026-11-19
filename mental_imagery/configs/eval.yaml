@@ -1,0 +1,25 @@
+# uv run python -m mental_imagery.eval checkpoint=<run_dir>/checkpoints/step_025000
+defaults:
+  - games: benchmark
+  - _self_
+  - override hydra/job_logging: disabled
+  - override hydra/hydra_logging: disabled
+
+checkpoint: ???
+output_dir: ${checkpoint}/eval/${hydra:runtime.choices.games}
+num_puzzles: 200      # per game; puzzle i uses seed i
+batch_size: 64        # concurrent requests to vLLM
+max_tokens: 16384     # prompt + response
+save_generations: true
+
+vllm:
+  gpus: null          # indices into the visible GPUs; null = all (tensor parallel)
+  host: 127.0.0.1     # the server answers this machine only (0.0.0.0: every network interface)
+  port: 8000
+  gpu_memory_utilization: null
+  enforce_eager: false
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null

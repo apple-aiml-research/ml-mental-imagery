@@ -1,0 +1,99 @@
+Acknowledgements
+Portions of this ml-mental-imagery Software may utilize the following copyrighted
+material, the use of which is hereby acknowledged.
+
+_____________________
+
+Patrick Esser, Robin Rombach and Björn Ommer (taming-transformers)
+    The LlamaGen image tokenizer code adapted in
+    mental_imagery/visual_tokenizers/llamagen.py is modified from taming-transformers.
+
+    Copyright (c) 2020 Patrick Esser and Robin Rombach and Björn Ommer
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+    OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+    OR OTHER DEALINGS IN THE SOFTWARE.
+
+FoundationVision (LlamaGen)
+    The image tokenizer model code in mental_imagery/visual_tokenizers/llamagen.py
+    is adapted from LlamaGen (https://github.com/FoundationVision/LlamaGen).
+
+    MIT License
+
+    Copyright (c) 2024 FoundationVision
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+Google LLC (MaskGIT)
+    The LlamaGen image tokenizer code adapted in
+    mental_imagery/visual_tokenizers/llamagen.py is modified from MaskGIT
+    (https://github.com/google-research/maskgit).
+
+    Copyright 2022 Google LLC
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+_____________________
+
+Fonts
+    The fonts the puzzle engine renders with are not distributed with this
+    software: scripts/download_fonts.py downloads them, and building the engine
+    embeds them. Their copyright holders and licenses (SIL Open Font License 1.1,
+    Apache License 2.0, Bitstream Vera / Arev) are listed in
+    assets/fonts/README.md, with the license texts in assets/fonts/licenses/.
+
+_____________________
+
+Webster's Unabridged Dictionary, 1913 edition (Anagram word list)
+    The Anagram word list, engine/games/anagram/dictionary.txt, is not
+    distributed with this software: scripts/download_words.py downloads OPTED
+    and recreates it, and building the engine embeds it. It is a subset of the
+    headwords of OPTED,
+    The Online Plain Text English Dictionary by Ralph Sutherland
+    (https://www.mso.anu.edu.au/~ralph/OPTED/), which is based on the Project
+    Gutenberg eBook of Webster's Unabridged Dictionary
+    (https://www.gutenberg.org/ebooks/29765), in turn based on the 1913 edition
+    of Webster's Unabridged Dictionary. The content is in the public domain; as
+    OPTED asks, it remains free and in plain text, and OPTED, Project Gutenberg
+    and the 1913 Webster's Unabridged Dictionary are acknowledged here. See
+    engine/games/anagram/SOURCE.md.

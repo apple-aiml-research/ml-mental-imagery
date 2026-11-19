@@ -1,0 +1,5 @@
+# @package _global_
+# Visual Supervision: same tokens as Action Supervision, plus a head that predicts the next
+# board from the hidden states at every </action> (dropped at inference).
+visual_head:
+  enabled: true

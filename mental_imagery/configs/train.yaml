@@ -1,0 +1,78 @@
+# uv run torchrun --nproc-per-node 8 -m mental_imagery.train experiment=qwen3_5_9b/visual_cot_64
+defaults:
+  - _self_
+  - engine: default
+  - model: qwen3_5_9b
+  - games: benchmark
+  - method: action_supervision  # action_supervision | state_cot | boxes_cot | visual_supervision | visual_cot
+  - callbacks: default
+  - experiment: null
+  - override hydra/job_logging: disabled
+  - override hydra/hydra_logging: disabled
+
+run_name: ???  # set by the experiment; outputs go to <paths.output_dir>/<run_name>
+
+paths:
+  output_dir: outputs
+  artifacts_dir: artifacts
+
+visual_tokens:   # Visual CoT method
+  enabled: false
+  tokenizer: llamagen
+  codebook_size: 16384
+  fsq_checkpoint: null
+  grid_size: null              # tokens per board side (4 = 64x64 px, 8 = 128x128 px)
+  loss_weight: 0.1             # w * CE(visual tokens) + (1 - w) * CE(text)
+  embed_init_path: null
+
+visual_head:     # Visual Supervision method
+  enabled: false
+  stop_gradient: false         # true: the head reads detached hidden states (a probe; the model trains on actions only)
+  fsq_checkpoint: ${paths.artifacts_dir}/fsq/fsq_board_256.pt
+  loss_weight: 0.3             # CE(text) + w * CE(predicted board codes)
+  decoder_dim: 256
+  num_layers: 4
+  num_heads: 8
+  lr_multiplier: 100.0
+  max_frames_per_episode: 32
+
+text_cot:        # State CoT and Boxes CoT: each board written as text
+  enabled: false
+  boards: state                # state: JSON state description (State CoT) | boxes: object positions (Boxes CoT)
+  loss_weight: 0.3             # w * CE(state descriptions) + (1 - w) * CE(other text)
+
+training:
+  per_gpu_batch_size: ???
+  gradient_accumulation_steps: ???
+  total_steps: ???             # optimizer steps (length of the cosine schedule)
+  stop_at_step: null           # stop early without changing the schedule
+  max_tokens: 1024
+  sequence_packing: true      # concatenate each micro-batch's episodes (utils/packing.py); false pads them
+  max_grad_norm: 1.0
+
+optimizer:
+  lr: ???
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  eps: 1.0e-8
+
+scheduler:
+  warmup_steps: ???            # optimizer steps
+  min_lr_ratio: 0.1
+
+fsdp:
+  reshard_after_forward: false
+  activation_checkpointing: true
+
+checkpoint:
+  save_every_steps: ???        # model weights for evaluation
+  save_steps: []               # extra evaluation checkpoints
+  resume_every_steps: 1000     # full training state; only the newest is kept
+
+logging:
+  log_every: 10                # optimizer steps between logged records (metrics.jsonl); step 1 is always logged
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null

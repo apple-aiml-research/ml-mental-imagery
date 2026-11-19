@@ -1,0 +1,30 @@
+# @package _global_
+# Qwen3.5-9B: Visual CoT, 64x64 boards with the FSQ board tokenizer (4x4 tokens).
+defaults:
+  - override /model: qwen3_5_9b
+  - override /method: visual_cot
+  - override /visual_tokens: fsq
+
+run_name: qwen3_5_9b/visual_cot_64_fsq
+
+visual_tokens:
+  grid_size: 4
+  loss_weight: 0.05
+
+training:
+  per_gpu_batch_size: 16
+  gradient_accumulation_steps: 4
+  total_steps: 50000
+
+optimizer:
+  lr: 3.0e-5
+
+scheduler:
+  warmup_steps: 250
+
+fsdp:
+  activation_checkpointing: true
+
+checkpoint:
+  save_every_steps: 5000
+  save_steps: [24000]

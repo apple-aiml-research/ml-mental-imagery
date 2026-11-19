@@ -1,0 +1,4 @@
+# FSQ autoencoder trained on puzzle boards at 64, 128, and 256 px (15,625 codes).
+tokenizer: fsq
+codebook_size: 15625
+fsq_checkpoint: ${paths.artifacts_dir}/fsq/fsq_board_multires.pt

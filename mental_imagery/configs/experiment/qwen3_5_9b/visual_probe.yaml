@@ -1,0 +1,30 @@
+# @package _global_
+# Qwen3.5-9B: Action Supervision with a visual probe. The visual prediction head reads
+# detached hidden states, so the model is trained on actions only (as Action Supervision)
+# while the head learns to decode its mental images.
+defaults:
+  - override /model: qwen3_5_9b
+  - override /method: visual_supervision
+
+run_name: qwen3_5_9b/visual_probe
+
+visual_head:
+  stop_gradient: true
+  loss_weight: 0.7
+
+training:
+  per_gpu_batch_size: 32
+  gradient_accumulation_steps: 2
+  total_steps: 50000
+
+optimizer:
+  lr: 1.0e-5
+
+scheduler:
+  warmup_steps: 500
+
+fsdp:
+  activation_checkpointing: true
+
+checkpoint:
+  save_every_steps: 5000

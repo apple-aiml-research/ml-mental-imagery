@@ -1,0 +1,27 @@
+# Rust
+/target
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Run artifacts
+artifacts/
+checkpoints/
+outputs/
+.model_cache/
+
+# Fonts the engine embeds: not distributed, fetched by scripts/download_fonts.py
+assets/fonts/*.ttf
+
+# Anagram word list: not distributed, recreated from OPTED by scripts/download_words.py
+engine/games/anagram/dictionary.txt
+engine/games/anagram/dictionary.txt.tmp
+
+# CUDA kernel wheels built by scripts/kernels.sh
+kernels/

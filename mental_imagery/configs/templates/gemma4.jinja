@@ -1,0 +1,13 @@
+{#- vLLM chat template for Gemma 4: the training prompt of model.families.Gemma4.build_prompt_text, after <bos>. -#}
+{{- bos_token -}}
+{{- '<|turn>system\n<|think|>\n<turn|>\n' -}}
+{%- for message in messages -%}
+{%- set ns = namespace(c='') -%}
+{%- for item in message['content'] -%}
+{%- if item['type'] == 'text' -%}{%- set ns.c = ns.c + item['text'] -%}
+{%- elif item['type'] in ['image', 'image_url'] -%}{%- set ns.c = ns.c + '<|image|>' -%}
+{%- endif -%}
+{%- endfor -%}
+{{- '<|turn>' + message['role'] + '\n' + ns.c + '<turn|>\n' -}}
+{%- endfor -%}
+{{- '<|turn>model\n<|channel>thought\n' -}}

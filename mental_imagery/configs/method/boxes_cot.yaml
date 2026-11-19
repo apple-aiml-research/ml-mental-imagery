@@ -1,0 +1,9 @@
+# @package _global_
+# Boxes CoT: the model writes each board as the positions of the
+# task-relevant objects in the image before its action,
+# <board>{"player":[6,4],"box_0":[2,6],"goal_0":[3,4]}</board><action>...</action>
+# (per game: image-space boxes, 3D boxes, grid cells or slot indices; see
+# engine/base/object_boxes.rs).
+text_cot:
+  enabled: true
+  boards: boxes

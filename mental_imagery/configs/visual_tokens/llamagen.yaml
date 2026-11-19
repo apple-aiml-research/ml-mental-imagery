@@ -1,0 +1,4 @@
+# LlamaGen VQ-16 (ImageNet-trained, 16,384 codes); weights from the Hugging Face Hub.
+tokenizer: llamagen
+codebook_size: 16384
+fsq_checkpoint: null

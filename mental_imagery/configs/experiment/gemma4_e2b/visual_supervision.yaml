@@ -1,0 +1,27 @@
+# @package _global_
+# Gemma 4 E2B: Visual Supervision (visual prediction head).
+defaults:
+  - override /model: gemma4_e2b
+  - override /method: visual_supervision
+
+run_name: gemma4_e2b/visual_supervision
+
+visual_head:
+  loss_weight: 0.7
+
+training:
+  per_gpu_batch_size: 32
+  gradient_accumulation_steps: 2
+  total_steps: 50000
+
+optimizer:
+  lr: 1.0e-5
+
+scheduler:
+  warmup_steps: 500
+
+fsdp:
+  activation_checkpointing: true
+
+checkpoint:
+  save_every_steps: 4000

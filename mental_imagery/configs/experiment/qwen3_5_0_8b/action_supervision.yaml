@@ -1,0 +1,24 @@
+# @package _global_
+# Qwen3.5-0.8B: Action Supervision (actions only).
+defaults:
+  - override /model: qwen3_5_0_8b
+  - override /method: action_supervision
+
+run_name: qwen3_5_0_8b/action_supervision
+
+training:
+  per_gpu_batch_size: 64
+  gradient_accumulation_steps: 1
+  total_steps: 50000
+
+optimizer:
+  lr: 1.0e-5
+
+scheduler:
+  warmup_steps: 1000
+
+fsdp:
+  activation_checkpointing: true
+
+checkpoint:
+  save_every_steps: 4000

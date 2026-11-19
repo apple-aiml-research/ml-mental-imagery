@@ -1,0 +1,20 @@
+# uv run python -m mental_imagery.ablation.token_replacement checkpoint=<run_dir>/checkpoints/step_025000 mode=ground_truth
+# Token-replacement test for a Visual CoT checkpoint.
+defaults:
+  - games: benchmark
+  - _self_
+  - override hydra/job_logging: disabled
+  - override hydra/hydra_logging: disabled
+
+checkpoint: ???
+mode: ???             # none | ground_truth | black_frame | uniform | random_history | initial_frame
+seed: 0               # seeds the uniform and random_history choices (offset by the puzzle seed)
+output_dir: ${checkpoint}/eval/token_replacement/${mode}
+num_puzzles: 200      # per game; puzzle i uses seed i
+batch_size: 16        # episodes decoded together on one GPU
+max_tokens: 16384     # prompt + response
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null

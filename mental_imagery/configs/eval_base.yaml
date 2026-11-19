@@ -1,0 +1,29 @@
+# uv run python -m mental_imagery.eval_base model=qwen3_5_9b
+# Zero-shot evaluation of the untrained base model.
+defaults:
+  - games: benchmark
+  - engine: default
+  - model: qwen3_5_9b
+  - _self_
+  - override hydra/job_logging: disabled
+  - override hydra/hydra_logging: disabled
+
+output_dir: outputs/${model.short_name}/base/eval/${hydra:runtime.choices.games}
+num_puzzles: 200        # per game; puzzle i uses seed i
+batch_size: 32          # concurrent requests to vLLM
+max_tokens: 16384       # vLLM context: prompt + response
+max_new_tokens: 12288   # response budget, including the reasoning span
+save_generations: true
+unfinished_yes_no: coin_flip  # yes/no answer when the reasoning never ended: coin_flip | fail
+
+vllm:
+  gpus: null            # indices into the visible GPUs; null = all (tensor parallel)
+  host: 127.0.0.1     # the server answers this machine only (0.0.0.0: every network interface)
+  port: 8000
+  gpu_memory_utilization: null
+  enforce_eager: false
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null

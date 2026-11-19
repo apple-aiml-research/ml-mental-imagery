@@ -1,0 +1,10 @@
+# @package _global_
+# Visual CoT: the model writes each board as visual tokens before its action,
+# <board><v..>...</board><action>...</action>, starting from vision-aligned embeddings.
+defaults:
+  - /visual_tokens: llamagen
+visual_tokens:
+  enabled: true
+  embed_init_path: ${paths.artifacts_dir}/embed_init/${model.short_name}_${visual_tokens.tokenizer}.pt
+model:
+  new_token_init: embed_init

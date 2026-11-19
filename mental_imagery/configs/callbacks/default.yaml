@@ -1,0 +1,5 @@
+# @package _global_
+# Run callbacks (mental_imagery/utils/callbacks.py). Other options can live in another
+# config directory added with hydra.searchpath, then be selected with callbacks=<name>.
+callbacks:
+  - _target_: mental_imagery.utils.callbacks.MetricsFile

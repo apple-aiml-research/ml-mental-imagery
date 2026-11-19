@@ -1,0 +1,4 @@
+# @package _global_
+# Target of the visual prediction head: 256x256 boards -> 16x16 codes.
+output_path: ${paths.artifacts_dir}/fsq/fsq_board_256.pt
+resolutions: [256]
