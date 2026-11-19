@@ -1,0 +1,5 @@
+# @package _global_
+# Tokenizer of the FSQ visual-token runs, trained on 64, 128, and 256 px boards
+# so it can encode 4x4 and 8x8 token grids.
+output_path: ${paths.artifacts_dir}/fsq/fsq_board_multires.pt
+resolutions: [64, 128, 256]

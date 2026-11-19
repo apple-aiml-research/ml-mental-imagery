@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!--
+  For licensing see accompanying LICENSE file.
+  Copyright (C) 2026 Apple Inc. All Rights Reserved.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Do multimodal models imagine electric sheep?</title>
+  <meta name="description" content="Large multimodal models develop mental imagery when solving spatial puzzles — and they do imagine sheep when solving sheep puzzles. NeurIPS 2026.">
+  <link rel="canonical" href="https://apple-aiml-research.github.io/ml-mental-imagery/">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#eef3fb">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1424">
+
+  <!-- Link previews: iMessage, Slack, WhatsApp, LinkedIn, Facebook; X reads og: too. -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://apple-aiml-research.github.io/ml-mental-imagery/">
+  <meta property="og:title" content="Do multimodal models imagine electric sheep?">
+  <meta property="og:description" content="Yes. Mental imagery emerges in VLMs trained to solve spatial puzzles, and sharpening it improves spatial reasoning.">
+  <meta property="og:image" content="https://apple-aiml-research.github.io/ml-mental-imagery/media/social/card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The paper’s title, with cartoon sheep drifting around it.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Google Scholar indexes the paper from these. -->
+  <meta name="citation_title" content="Do multimodal models imagine electric sheep?">
+  <meta name="citation_author" content="Ramakrishnan, Santhosh Kumar">
+  <meta name="citation_author" content="Vondrick, Carl">
+  <meta name="citation_author" content="Giryes, Raja">
+  <meta name="citation_author" content="Krähenbühl, Philipp">
+  <meta name="citation_author" content="Koltun, Vladlen">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="Advances in Neural Information Processing Systems">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2605.09693">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Do multimodal models imagine electric sheep?",
+    "description": "Large multimodal models develop mental imagery when solving spatial puzzles, and they do imagine sheep when solving sheep puzzles.",
+    "url": "https://apple-aiml-research.github.io/ml-mental-imagery/",
+    "image": "https://apple-aiml-research.github.io/ml-mental-imagery/media/social/card.jpg",
+    "author": [
+      {"@type": "Person", "name": "Santhosh Kumar Ramakrishnan"},
+      {"@type": "Person", "name": "Carl Vondrick"},
+      {"@type": "Person", "name": "Raja Giryes"},
+      {"@type": "Person", "name": "Philipp Krähenbühl"},
+      {"@type": "Person", "name": "Vladlen Koltun"}
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="venue">NeurIPS 2026</p>
+    <h1>Do multimodal models imagine electric&nbsp;sheep?</h1>
+    <p class="authors">
+      <span>Santhosh Kumar Ramakrishnan*</span>
+      <span>Carl Vondrick*</span>
+      <span>Raja Giryes*</span>
+      <span>Philipp Krähenbühl</span>
+      <span>Vladlen Koltun</span>
+    </p>
+    <p class="affiliation">Apple</p>
+    <nav class="links paper-links" aria-label="Paper links">
+      <a class="button" href="https://arxiv.org/pdf/2605.09693">Paper</a>
+      <a class="button" href="https://github.com/apple-aiml-research/ml-mental-imagery">Code</a>
+    </nav>
+
+    <section class="section abstract" id="abstract">
+      <h2>Abstract</h2>
+      <p>
+        Yes. We find that large multimodal models develop mental imagery when solving spatial puzzles, and they do imagine sheep when solving sheep puzzles.
+        We fine-tune a Qwen3.5 VLM to solve twelve diverse visual reasoning tasks – including tangram, jigsaw, sokoban, 3D mental rotation, and rush hour –
+        that require understanding geometry, spatial relationships, and the consequences of actions. By supervising the model to predict the open-loop
+        sequence of actions to solve a puzzle from an initial state, we show that the model’s activations after each action encode meaningful visual
+        information about the intermediate state. This finding suggests that an imperfect visual world model begins to form as a byproduct of learning to
+        select correct actions, in the absence of any explicit visual supervision. Building on this observation, we study two techniques to sharpen and use
+        the mental images formed by the model. We find that integrating as few as sixteen visual tokens per step into the chain of thought improves the
+        average solve rate from 83% to 89%, with particularly strong gains on reasoning-heavy tasks such as jigsaw and 3D mental rotation.
+      </p>
+    </section>
+
+    <section class="hero-scene is-placing" id="hero-scene" data-scene="intro" aria-label="Asked whether two sheep are the same, the VLM imagines rotating the left sheep, then answers no">
+      <div class="scene-sheep">
+        <figure class="scene-card scene-card-left" id="scene-left">
+          <div class="scene-image" id="scene-left-image">
+            <img class="scene-input" src="media/hero/sheep_left.webp" alt="A cartoon sheep, rotated and lying on its side" width="504" height="504">
+            <!-- With the answer, rings mark the tan wool puff, the tell that the pair is a mirror image: on the left of
+                 the final imagined pose (imagination_6.webp, inside the frames' 7% inset), on the right sheep's right. -->
+            <svg class="mirror-ring" viewBox="0 0 100 100" aria-hidden="true">
+              <defs><linearGradient id="mirror-ring-gradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0"/><stop offset="1"/></linearGradient></defs>
+              <g transform="translate(20 42.3)"><circle class="mirror-ping" r="11"/><circle class="mirror-halo" r="11" pathLength="1"/><circle class="mirror-stroke" r="11" pathLength="1"/></g>
+            </svg>
+          </div>
+          <span class="thought-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+          <figcaption>
+            <span class="caption-input">Left sheep</span>
+            <span class="caption-thought">In the VLM’s imagination</span>
+          </figcaption>
+        </figure>
+        <figure class="scene-card">
+          <div class="scene-image">
+            <img class="scene-input" src="media/hero/sheep_right.webp" alt="A cartoon sheep facing forward" width="504" height="504">
+            <svg class="mirror-ring" viewBox="0 0 100 100" aria-hidden="true">
+              <g transform="translate(82 34)"><circle class="mirror-ping" r="14"/><circle class="mirror-halo" r="14" pathLength="1"/><circle class="mirror-stroke" r="14" pathLength="1"/></g>
+            </svg>
+          </div>
+          <figcaption>Right sheep</figcaption>
+        </figure>
+      </div>
+      <div class="scene-response">
+        <div class="scene-prompt" id="scene-prompt">
+          <span class="prompt-label">Prompt</span>
+          <p class="scene-question">“Are these the same sheep?”</p>
+        </div>
+        <span class="scene-arrow" aria-hidden="true"></span>
+        <span class="vlm-chip">VLM</span>
+        <span class="scene-arrow" aria-hidden="true"></span>
+        <!-- The VLM's output, in the page so the hero's first paint has its final layout (main.js animates it).
+             Each action is split into its Qwen3.5 tokens, as in data/action_tokens.js. -->
+        <div class="token-stream" id="token-stream">
+          <div class="stream-track">
+            <span class="stream-step" data-action="rotatey(30)"><span class="token-action"><span class="token-piece">rotate</span><span class="token-piece">y</span><span class="token-piece">(</span><span class="token-piece">3</span><span class="token-piece">0</span><span class="token-piece">)</span></span><img class="token-image" src="media/hero/imagination_1.webp" alt="" fetchpriority="low"></span>
+            <span class="stream-step" data-action="rotatex(30)"><span class="token-action"><span class="token-piece">rot</span><span class="token-piece">at</span><span class="token-piece">ex</span><span class="token-piece">(</span><span class="token-piece">3</span><span class="token-piece">0</span><span class="token-piece">)</span></span><img class="token-image" src="media/hero/imagination_2.webp" alt="" fetchpriority="low"></span>
+            <span class="stream-step" data-action="rotatey(30)"><span class="token-action"><span class="token-piece">rotate</span><span class="token-piece">y</span><span class="token-piece">(</span><span class="token-piece">3</span><span class="token-piece">0</span><span class="token-piece">)</span></span><img class="token-image" src="media/hero/imagination_3.webp" alt="" fetchpriority="low"></span>
+            <span class="stream-step" data-action="rotatex(15)"><span class="token-action"><span class="token-piece">rot</span><span class="token-piece">at</span><span class="token-piece">ex</span><span class="token-piece">(</span><span class="token-piece">1</span><span class="token-piece">5</span><span class="token-piece">)</span></span><img class="token-image" src="media/hero/imagination_4.webp" alt="" fetchpriority="low"></span>
+            <span class="stream-step" data-action="rotatey(15)"><span class="token-action"><span class="token-piece">rotate</span><span class="token-piece">y</span><span class="token-piece">(</span><span class="token-piece">1</span><span class="token-piece">5</span><span class="token-piece">)</span></span><img class="token-image" src="media/hero/imagination_5.webp" alt="" fetchpriority="low"></span>
+            <span class="stream-step" data-action="rotatez(15)"><span class="token-action"><span class="token-piece">rotate</span><span class="token-piece">z</span><span class="token-piece">(</span><span class="token-piece">1</span><span class="token-piece">5</span><span class="token-piece">)</span></span><img class="token-image" src="media/hero/imagination_6.webp" alt="" fetchpriority="low"></span>
+            <span class="answer-group"><span class="token-answer"><small>Answer</small><b>“no”</b></span><span class="answer-note">Mirror image</span></span>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="link-button scene-replay" id="scene-replay">
+        <svg class="countdown-ring" viewBox="0 0 20 20" aria-hidden="true"><circle class="ring-track" cx="10" cy="10" r="8"/><circle class="ring-progress" cx="10" cy="10" r="8"/></svg>
+        Replay
+      </button>
+    </section>
+  </div>
+</header>
+
+<main>
+  <section class="section" id="suite">
+    <div class="section-head">
+      <h2>Spatial intelligence suite</h2>
+      <button type="button" class="link-button" id="wall-shuffle">↻ New puzzles</button>
+    </div>
+    <p class="section-intro wall-intro">Click any puzzle to play it yourself.</p>
+    <div class="puzzle-wall" id="puzzle-wall"></div>
+  </section>
+
+  <section class="section" id="emergence">
+    <h2>Mental imagery emerges</h2>
+    <p class="section-intro">
+      We train the model with action supervision only, freeze it, and fit a small probe that sees nothing but the VLM’s hidden
+      states, at every layer, at the token that ends each action (not even the input image). The probe recovers piece positions,
+      poses, and layouts the model was never asked to represent. Colors are often off, but the geometry is there.
+      <button type="button" class="link-button inline-link" data-probe-detail>How the probe works →</button>
+    </p>
+    <div class="story-player" id="emergence-player"></div>
+  </section>
+
+  <section class="section" id="sharpening">
+    <h2>Sharpening Visual Imagination</h2>
+    <p class="section-intro">Two ways to sharpen these mental images: train the probe together with the model, or have the
+      model write out each next state in its chain of thought.</p>
+    <div class="mechanisms" id="mechanisms"></div>
+    <h3 class="subhead">Head to head</h3>
+    <p class="section-intro">The same puzzle, solved by all three models.</p>
+    <div class="story-player" id="head-to-head"></div>
+  </section>
+
+  <section class="section" id="limitation">
+    <h2>When imagination misleads</h2>
+    <div class="story-player" id="limitation-player"></div>
+  </section>
+
+  <section class="section" id="results">
+    <h2>Results</h2>
+    <p class="section-intro">
+      Solve rates (%) of Qwen3.5 9B fine-tuned with each method, 200 held-out puzzles per task.
+      State CoT and Boxes CoT write each state as text in place of Visual CoT’s visual tokens: a compact JSON description
+      of the state, or the locations of the objects in it.
+    </p>
+    <div class="results-average" id="results-average" role="img" aria-label="Average solve rate by method"></div>
+    <h3 class="subhead">Per task</h3>
+    <div class="results-games" id="results-games" role="img" aria-label="Solve rate by method on each task"></div>
+    <p class="section-intro results-summary">
+      Action Supervision alone produces useful mental imagery, and Visual Supervision refines it, improving the average solve rate
+      from 82.9% to 86.3%. Next-state chain-of-thought performs better still: State CoT and Boxes CoT reach 87.3% and 86.7%,
+      respectively, and excel on clearly discretizable puzzles such as tangram, sokoban, bloxorz, and rush hour. Visual CoT leads
+      overall at 88.9% and excels where visual states are difficult to express in text—lifting jigsaw from 65.0% to 92.0% and 3D
+      mental rotation from 49.5% to 75.0%. Its compact 16-token variant also reaches 88.5%, outperforming the higher-resolution
+      variant on longer-horizon puzzles.
+    </p>
+  </section>
+
+  <section class="section" id="bibtex">
+    <h2>Citation</h2>
+    <pre class="bibtex"><code>@inproceedings{Ramakrishnan2026,
+  author = {Santhosh Kumar Ramakrishnan and Carl Vondrick and Raja Giryes and Philipp Kr{\"a}henb{\"u}hl and Vladlen Koltun},
+  title = {Do Multimodal Models Imagine Electric Sheep?},
+  booktitle = {NeurIPS},
+  year = {2026}
+}</code></pre>
+  </section>
+</main>
+
+<script src="js/common.js"></script>
+<script src="data/suite.js"></script>
+<script src="data/stories.js"></script>
+<script src="data/action_tokens.js"></script>
+<script src="js/play_kit.js"></script>
+<script src="js/play.js"></script>
+<script src="js/hero_refraction.js"></script>
+<script src="js/main.js"></script>
+<script src="js/stories.js"></script>
+<script src="js/probe_detail.js"></script>
+</body>
+</html>

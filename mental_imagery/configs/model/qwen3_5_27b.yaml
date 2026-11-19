@@ -1,0 +1,7 @@
+name: Qwen/Qwen3.5-27B
+revision: fc05daec18b0a78c049392ed2e771dde82bdf654
+short_name: qwen3_5_27b
+family: qwen35
+dtype: bfloat16
+attn_implementation: flash_attention_2
+new_token_init: mean_noise

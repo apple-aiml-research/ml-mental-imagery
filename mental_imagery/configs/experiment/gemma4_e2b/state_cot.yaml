@@ -1,0 +1,28 @@
+# @package _global_
+# Gemma 4 E2B: State CoT (JSON state descriptions between <board> and </board>).
+defaults:
+  - override /model: gemma4_e2b
+  - override /method: state_cot
+
+run_name: gemma4_e2b/state_cot
+
+text_cot:
+  loss_weight: 0.3
+
+training:
+  per_gpu_batch_size: 16
+  gradient_accumulation_steps: 4
+  total_steps: 50000
+  max_tokens: 1536
+
+optimizer:
+  lr: 3.0e-5
+
+scheduler:
+  warmup_steps: 250
+
+fsdp:
+  activation_checkpointing: true
+
+checkpoint:
+  save_every_steps: 4000

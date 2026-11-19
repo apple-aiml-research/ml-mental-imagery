@@ -1,0 +1,33 @@
+[package]
+name = "mental-imagery-engine"
+version = "0.1.0"
+edition = "2021"
+description = "Puzzle environments and token-level expert labeling for visual chain-of-thought training"
+
+[lib]
+name = "mental_imagery_engine"
+path = "engine/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+pyo3 = { version = "0.29", optional = true }
+numpy = { version = "0.29", optional = true }
+tokenizers = "0.21"
+rayon = "1.10"
+rand = "0.8"
+rand_chacha = "0.3"
+image = { version = "0.25", default-features = false, features = ["png"] }
+imageproc = "0.25"
+ab_glyph = "0.2"
+glam = "0.29"
+inventory = "0.3"
+ahash = "0.8"
+
+[features]
+python = ["pyo3/extension-module", "dep:pyo3", "dep:numpy"]
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"

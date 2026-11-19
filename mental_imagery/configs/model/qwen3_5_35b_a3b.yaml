@@ -1,0 +1,8 @@
+# Mixture of experts: 256 experts, 8 active per token (about 3B active parameters).
+name: Qwen/Qwen3.5-35B-A3B
+revision: ec2d4ece1ffb563322cbee9a48fe0e3fcbce0307
+short_name: qwen3_5_35b_a3b
+family: qwen35
+dtype: bfloat16
+attn_implementation: flash_attention_2
+new_token_init: mean_noise

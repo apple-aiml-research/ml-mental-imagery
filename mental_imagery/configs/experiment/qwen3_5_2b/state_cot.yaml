@@ -1,0 +1,27 @@
+# @package _global_
+# Qwen3.5-2B: State CoT (JSON state descriptions between <board> and </board>).
+defaults:
+  - override /model: qwen3_5_2b
+  - override /method: state_cot
+
+run_name: qwen3_5_2b/state_cot
+
+text_cot:
+  loss_weight: 0.3
+
+training:
+  per_gpu_batch_size: 16
+  gradient_accumulation_steps: 4
+  total_steps: 50000
+
+optimizer:
+  lr: 3.0e-5
+
+scheduler:
+  warmup_steps: 250
+
+fsdp:
+  activation_checkpointing: false
+
+checkpoint:
+  save_every_steps: 4000

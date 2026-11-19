@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "Please consider citing our paper if you find this work useful in your research."
+title: ml-mental-imagery
+url: https://github.com/apple-aiml-research/ml-mental-imagery
+authors:
+  - family-names: Ramakrishnan
+    given-names: Santhosh Kumar
+  - family-names: Vondrick
+    given-names: Carl
+  - family-names: Giryes
+    given-names: Raja
+  - family-names: Krähenbühl
+    given-names: Philipp
+  - family-names: Koltun
+    given-names: Vladlen
+preferred-citation:
+  type: conference-paper
+  title: "Do Multimodal Models Imagine Electric Sheep?"
+  authors:
+    - family-names: Ramakrishnan
+      given-names: Santhosh Kumar
+    - family-names: Vondrick
+      given-names: Carl
+    - family-names: Giryes
+      given-names: Raja
+    - family-names: Krähenbühl
+      given-names: Philipp
+    - family-names: Koltun
+      given-names: Vladlen
+  year: 2026
+  conference:
+    name: NeurIPS
+  url: https://arxiv.org/abs/2605.09693

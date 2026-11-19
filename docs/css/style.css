@@ -1,0 +1,932 @@
+/*
+ * For licensing see accompanying LICENSE file.
+ * Copyright (C) 2026 Apple Inc. All Rights Reserved.
+ */
+/* Do multimodal models imagine electric sheep? — project page styles. */
+
+/* Light and dark themes, following the browser: each color is light-dark(light, dark). Boards, images, and
+   videos keep their own colors, so their frames stay white in both. */
+:root {
+  color-scheme: light dark;
+  --ink: light-dark(#0b0b0b, #ebeae5);
+  --ink-2: light-dark(#52514e, #b2b0a9);
+  --ink-3: light-dark(#8a8984, #8a8983);
+  --surface: light-dark(#ffffff, #111216);
+  --surface-2: light-dark(#f6f6f4, #18191e);
+  --card: light-dark(#ffffff, #1e1f26); /* raised: tiles, the player, prompts, chips */
+  --card-line: light-dark(#ecebf6, #2d2c3d);
+  --board: light-dark(#f1f1ef, #26272d); /* behind a board until it loads */
+  --line: light-dark(#e6e5e1, #2f3038);
+  --accent: #2a78d6;
+  --link: light-dark(#1c5cab, #82b1f2);
+  --button-hover: light-dark(#2b2b2b, #cfcec9);
+  --dream: light-dark(#4a3aa7, #a698f7);
+  --dream-fill: light-dark(#4a3aa7, #5a4ac6); /* under white text */
+  --dream-tint: light-dark(#efecfb, #2a2543);
+  --good-fill: #0b6b0b; /* under white text, over a board */
+  --halo: light-dark(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1)); /* the thought bubbles' soft rim */
+  --token-bg: light-dark(#e9e8f3, #29273d);
+  --token-ink: light-dark(#34314f, #d4cff3);
+  --token-quiet: light-dark(#f4f4f2, #23242b);
+  --token-quiet-current: light-dark(#ebeae6, #2e2f37);
+  --stage-top: light-dark(#f6f5fd, #1a1929);
+  --stage-bottom: light-dark(#fbfbfd, #15151b);
+  --hero-top: light-dark(#eef3fb, #0e1424);
+  --hero-middle: light-dark(#f6f4fd, #15122a);
+  --hero-glow: light-dark(rgba(74, 58, 167, 0.13), rgba(124, 104, 255, 0.22));
+  --good-ink: light-dark(#0b6b0b, #86d993);
+  --good-bg: light-dark(#e5f5e5, #173322);
+  --bad-ink: light-dark(#b42f2f, #f29393);
+  --bad-bg: light-dark(#fbe9e9, #3b1e21);
+  --radius: 14px;
+  --content: 1080px;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --mono: var(--sans);
+  --scene-ease: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--link); }
+
+img, video { max-width: 100%; height: auto; display: block; }
+
+video {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+
+h1, h2, h3 { font-family: var(--sans); font-weight: 600; line-height: 1.2; }
+h2 { font-size: 34px; margin: 0 0 14px; }
+h3 { font-size: 21px; margin: 0 0 6px; }
+
+.button {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--surface);
+  font: 600 15px var(--sans);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.button:hover { transform: translateY(-1px); background: var(--button-hover); }
+
+.link-button {
+  border: none;
+  background: none;
+  color: var(--link);
+  font: 600 15px var(--sans);
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+/* ---------------------------------------------------------------- Hero */
+
+/* The landing fills the first screen (title, authors, animation); everything else is below the fold. */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  background:
+    radial-gradient(ellipse 50% 45% at 50% 68%, var(--hero-glow), transparent 70%),
+    linear-gradient(180deg, var(--hero-top) 0%, var(--hero-middle) 55%, var(--surface) 100%);
+  padding: 30px 20px 50px;
+  text-align: center;
+}
+
+.hero-inner { width: 100%; max-width: 1160px; margin: 0 auto; }
+
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  width: 32px;
+  height: 32px;
+  margin-left: -16px;
+  color: var(--ink-3);
+  animation: nudge 2.4s ease-in-out infinite;
+}
+.scroll-cue svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.scroll-cue:hover { color: var(--dream); }
+@keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+.venue {
+  margin: 0 0 10px;
+  font: 600 13px var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dream);
+}
+
+.hero h1 {
+  font-size: clamp(30px, 4.5vw, 48px);
+  margin: 0 auto 18px;
+  max-width: 1160px;
+  letter-spacing: -0.01em;
+}
+
+.authors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 22px;
+  margin: 0;
+  font-size: 18px;
+}
+
+.affiliation { margin: 14px 0 0; color: var(--ink-2); }
+
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+
+/* Hero scene. Layout is the final ("thinking") arrangement; the intro scales and shifts it with
+   transforms so the move between scenes animates smoothly. */
+.hero-scene {
+  /* Intro sizing, also read by main.js to place the prompt centered under the sheep. */
+  --intro-sheep-scale: 1.16;
+  --intro-sheep-shift: 18px;
+  --intro-prompt-scale: 1.6;
+  position: relative;
+  margin: 0 auto;
+}
+
+/* The prompt is dialogue: in the intro it sits large under the sheep; then it slides into the
+   output row as the VLM's input. main.js sets --intro-dx/--intro-dy for the intro position. */
+.scene-prompt {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 6px 14px 8px;
+  background: var(--card);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(28, 92, 171, 0.12);
+  transition: transform 1s var(--scene-ease);
+}
+.prompt-label {
+  font: 600 9px var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dream);
+}
+.scene-question { margin: 0; font: italic 500 16px/1.2 var(--sans); white-space: nowrap; }
+/* While main.js positions the prompt (on load, resize, font load), it snaps instead of sliding. */
+.hero-scene.is-placing .scene-prompt { transition: none; }
+.hero-scene:not(.is-placed) .scene-prompt { visibility: hidden; }
+
+.scene-sheep {
+  display: flex;
+  justify-content: center;
+  gap: 44px;
+  transition: transform 1s var(--scene-ease);
+}
+
+.scene-card { position: relative; margin: 0; width: 280px; }
+
+.scene-image {
+  position: relative;
+  aspect-ratio: 1;
+  background: #fff;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 16px 40px rgba(28, 92, 171, 0.12);
+  transition: border-radius 0.9s var(--scene-ease), box-shadow 0.9s ease;
+}
+.scene-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.45s ease, filter 0.5s ease;
+}
+.scene-input.is-hidden { opacity: 0; filter: blur(5px); }
+.scene-frame {
+  inset: 7%;
+  width: 86%;
+  height: 86%;
+  opacity: 0;
+  filter: blur(5px);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 64%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 64%, transparent 100%);
+}
+.scene-frame.is-visible { opacity: 1; filter: none; }
+/* The poses seen through the refraction (hero_refraction.js), drawn over the frames in place of them. */
+.scene-refraction { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.45s ease; }
+.scene-refraction.is-visible { opacity: 1; }
+
+/* The left input becomes the VLM's thought bubble. */
+.scene-card-left.is-thought .scene-image {
+  border-radius: 48% 52% 46% 54% / 56% 50% 50% 44%;
+  box-shadow:
+    0 0 0 8px var(--halo),
+    0 0 80px rgba(74, 58, 167, 0.32),
+    0 18px 50px rgba(74, 58, 167, 0.18);
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Thought dots trailing from the bubble down toward the VLM chip. */
+.thought-dots span {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 4px var(--halo), 0 0 18px rgba(74, 58, 167, 0.35);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.2, 1.5, 0.4, 1);
+}
+/* Rising from the VLM chip, which sits ~12px right of the card's left edge in the one-line row. */
+.thought-dots span:nth-child(1) { left: 3px; top: 268px; width: 18px; height: 18px; transition-delay: 0.5s; }
+.thought-dots span:nth-child(2) { left: 6px; top: 298px; width: 12px; height: 12px; transition-delay: 0.3s; }
+.thought-dots span:nth-child(3) { left: 8px; top: 322px; width: 8px; height: 8px; transition-delay: 0.1s; }
+.scene-card-left.is-thought .thought-dots span { opacity: 1; transform: none; }
+
+/* While the VLM is thinking, a glow travels up the dots from the VLM to the bubble, once per step.
+   Uses the individual `scale` property so it doesn't fight the dots' appear transition on `transform`. */
+.hero-scene[data-scene="thinking"] .scene-card-left.is-thought .thought-dots span { animation: thought-pulse 1.4s ease-in-out infinite; }
+.hero-scene[data-scene="thinking"] .scene-card-left.is-thought .thought-dots span:nth-child(3) { animation-delay: 0s; }
+.hero-scene[data-scene="thinking"] .scene-card-left.is-thought .thought-dots span:nth-child(2) { animation-delay: 0.2s; }
+.hero-scene[data-scene="thinking"] .scene-card-left.is-thought .thought-dots span:nth-child(1) { animation-delay: 0.4s; }
+@keyframes thought-pulse {
+  0%, 60%, 100% { scale: 1; background: #fff; }
+  25% { scale: 1.4; background: #d6ccff; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.75), 0 0 26px rgba(74, 58, 167, 0.85); }
+}
+
+/* Answered: rings mark the tan wool puff on the final imagined pose and on the right sheep, and a note under
+   the answer says why it's "no": the pair is a mirror image, which no rotation lines up. */
+.hero-scene { --mirror-mark: var(--dream); }
+.mirror-ring { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.mirror-ring circle { fill: none; transform-box: fill-box; transform-origin: center; }
+#mirror-ring-gradient stop:first-child { stop-color: var(--mirror-mark); }
+#mirror-ring-gradient stop:last-child { stop-color: var(--accent); }
+
+/* Each ring draws in from 12 o'clock, the left one counterclockwise, so the two draw as mirror images. Undrawn,
+   they're hidden too: the round caps would show as dots. */
+.mirror-halo, .mirror-stroke {
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  transform: rotate(-90deg);
+  transition: opacity 0.25s ease, stroke-dashoffset 0s linear 0.25s;
+}
+.scene-card-left .mirror-halo, .scene-card-left .mirror-stroke { transform: scale(-1, 1) rotate(-90deg); }
+.mirror-halo { stroke: #fff; stroke-width: 2.6; }
+.mirror-stroke { stroke: url(#mirror-ring-gradient); stroke-width: 1.1; filter: drop-shadow(0 0 1.2px rgba(74, 58, 167, 0.55)); }
+.hero-scene[data-scene="answered"] .mirror-halo, .hero-scene[data-scene="answered"] .mirror-stroke {
+  stroke-dashoffset: 0;
+  transition: opacity 0s linear 0.4s, stroke-dashoffset 0.8s var(--scene-ease) 0.4s;
+}
+.hero-scene[data-scene="answered"] .mirror-halo { opacity: 0.85; }
+.hero-scene[data-scene="answered"] .mirror-stroke { opacity: 1; }
+
+/* Once drawn, a ripple. */
+.mirror-ping { stroke: var(--mirror-mark); stroke-width: 0.8; opacity: 0; }
+.hero-scene[data-scene="answered"] .mirror-ping { animation: mirror-ping 0.9s ease-out 1.15s; }
+@keyframes mirror-ping {
+  from { opacity: 0.6; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.45); }
+}
+
+.scene-card figcaption { position: relative; height: 1.6em; margin-top: 12px; font-size: 14px; color: var(--ink); }
+.caption-input, .caption-thought { position: absolute; inset: 0; transition: opacity 0.5s ease; }
+.caption-thought { opacity: 0; color: var(--dream); font-weight: 600; }
+.scene-card-left.is-thought .caption-input { opacity: 0; }
+.scene-card-left.is-thought .caption-thought { opacity: 1; }
+
+.scene-response {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 72px;
+  margin-top: 22px;
+}
+.scene-arrow, .vlm-chip { transition: visibility 0s linear 0.95s; } /* appear, unfaded, as the prompt lands (its move takes 1s) */
+
+.scene-arrow { position: relative; flex: none; width: 22px; height: 2px; background: var(--ink-3); }
+.scene-arrow::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: -4px;
+  border-left: 7px solid var(--ink-3);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+.vlm-chip {
+  flex: none;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: #3d4247;
+  color: #fff;
+  font: 700 16px var(--sans);
+  letter-spacing: 0.04em;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+}
+
+/* A tape: past the row's width, main.js slides the track left and older steps fade out at the left edge.
+   The padding (cancelled by the margin) leaves room for the glows that overflow: hidden would clip. */
+.token-stream { flex: 1; min-width: 0; overflow: hidden; padding: 20px 20px 20px 0; margin: -20px -20px -20px 0; }
+.token-stream.is-overflowing { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 72px); mask-image: linear-gradient(90deg, transparent 0, #000 72px); }
+.stream-track { position: relative; display: flex; align-items: center; gap: 6px; width: max-content; transition: transform 0.45s ease; }
+
+.stream-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.stream-step.is-visible { opacity: 1; transform: none; }
+
+.token-action {
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: var(--token-bg);
+  color: var(--token-ink);
+  font: 500 12px var(--mono);
+}
+/* One segment per model token, with a hairline at each token boundary. */
+.token-piece { white-space: pre; }
+.token-piece + .token-piece { margin-left: 2px; padding-left: 2px; border-left: 1px solid color-mix(in srgb, currentColor 30%, transparent); }
+
+/* Imagined poses in the stream look like small thought bubbles, matching the big one. */
+.token-image {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  box-shadow: 0 0 0 1.5px rgba(74, 58, 167, 0.35), 0 0 10px rgba(74, 58, 167, 0.15);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.2, 1.5, 0.4, 1), box-shadow 0.3s ease;
+}
+.stream-step.is-visible .token-image { opacity: 1; transform: none; transition-delay: 0.35s, 0.35s, 0s; }
+.stream-step.is-current .token-image { box-shadow: 0 0 0 2.5px var(--dream), 0 0 18px rgba(74, 58, 167, 0.5); }
+
+.answer-group {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-left: 10px;
+  opacity: 0;
+  transform: scale(0.8);
+  transform-origin: left center;
+  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+.answer-group.is-visible { opacity: 1; transform: none; }
+/* Under the chip, out of the flow so the chip stays level with the tokens. */
+.answer-note {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  font: 600 10px var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mirror-mark);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.answer-group.is-visible .answer-note { opacity: 1; transition: opacity 0.5s ease 0.4s; }
+.token-answer {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 18px 7px;
+  border-radius: 999px;
+  background: var(--dream-fill);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(74, 58, 167, 0.35);
+}
+.token-answer small { font: 600 11px var(--sans); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
+.token-answer b { font: 600 24px var(--sans); }
+
+.scene-replay {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px auto 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.hero-scene[data-scene="answered"] .scene-replay { opacity: 1; pointer-events: auto; transition-delay: 0.5s; }
+
+/* Countdown to the automatic replay; its duration (--countdown-ms) is set from main.js. */
+.countdown-ring { width: 18px; height: 18px; transform: rotate(-90deg); }
+.ring-track, .ring-progress { fill: none; stroke-width: 2.5; }
+.ring-track { stroke: rgba(74, 58, 167, 0.18); }
+.ring-progress { stroke: var(--dream); stroke-linecap: round; stroke-dasharray: 50.27; stroke-dashoffset: 50.27; }
+.hero-scene[data-scene="answered"] .ring-progress { animation: countdown var(--countdown-ms, 6000ms) linear 0.5s forwards; }
+@keyframes countdown { to { stroke-dashoffset: 0; } }
+
+/* Intro: the question and sheep, large and centered in the space the output will take. */
+.hero-scene[data-scene="intro"] .scene-sheep { transform: translateY(var(--intro-sheep-shift)) scale(var(--intro-sheep-scale)); }
+.hero-scene[data-scene="intro"] .scene-prompt { transform: translate(var(--intro-dx, 0), var(--intro-dy, 0)) scale(var(--intro-prompt-scale)); }
+.hero-scene[data-scene="intro"] .scene-arrow, .hero-scene[data-scene="intro"] .vlm-chip { visibility: hidden; transition-delay: 0s; }
+
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue { animation: none; }
+  .scene-prompt, .scene-sheep, .scene-image, .scene-image img, .scene-response > *, .stream-track, .stream-step, .token-image, .answer-group, .scene-replay { transition: none; }
+  .countdown-ring { display: none; }
+  .scene-card-left.is-thought .scene-image, .hero-scene[data-scene="thinking"] .scene-card-left.is-thought .thought-dots span { animation: none; }
+  .thought-dots span, .mirror-ring circle, .answer-note,
+  .hero-scene[data-scene="answered"] .mirror-ring circle, .answer-group.is-visible .answer-note { transition: none; }
+  .hero-scene[data-scene="answered"] .mirror-ping { animation: none; }
+}
+
+/* ---------------------------------------------------------------- Sections */
+
+.section { max-width: var(--content); margin: 0 auto; padding: 56px 20px 8px; }
+
+.section-intro { color: var(--ink-2); margin: 0 0 22px; }
+
+.abstract { padding-top: 40px; text-align: left; }
+.paper-links { justify-content: center; }
+.lede { font: 400 24px/1.45 var(--sans); margin: 0 0 14px; }
+
+
+/* Puzzle wall: two rows of six cards, with certificate variants beside their base games;
+   each tile plays an expert solution with its action tokens. */
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 4px; }
+.section-head .link-button { flex: none; white-space: nowrap; }
+.puzzle-wall { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+.wall-tile { margin: 0; padding: 8px 8px 10px; border: 1px solid var(--card-line); border-radius: 20px; background: var(--card); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 10px 28px rgba(28, 92, 171, 0.07); }
+@media (min-width: 821px) {
+  .wall-tile:nth-child(-n+6) { grid-row: 1; }
+  .wall-tile:nth-child(n+7) { grid-row: 2; }
+}
+.wall-board { aspect-ratio: 1; overflow: hidden; border-radius: 10px; background: var(--board); }
+.wall-board video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.wall-tile .token-tape { height: 24px; margin: 8px 0 0; }
+/* Quiet tokens: the boards are the focus. The newest token only darkens a little. */
+.wall-tile .token-action { padding: 2px 6px; background: var(--token-quiet); color: var(--ink-3); font-size: 11px; }
+.wall-tile .tape-token.is-current .token-action { background: var(--token-quiet-current); color: var(--ink-2); }
+.wall-tile figcaption { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; margin: 4px 2px 0; line-height: 1.35; }
+.wall-tile figcaption b { flex-basis: 100%; font-size: 14px; }
+.wall-skill { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+/* Tiles open the player: a play badge over the board on hover. */
+.wall-tile { cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.wall-tile:hover, .wall-tile:focus-visible { transform: translateY(-2px); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 14px 34px rgba(28, 92, 171, 0.14); outline: none; }
+.wall-tile:focus-visible { box-shadow: 0 0 0 2px var(--accent), 0 14px 34px rgba(28, 92, 171, 0.14); }
+.wall-board { position: relative; }
+.wall-play { position: absolute; left: 50%; bottom: 10px; transform: translate(-50%, 4px); padding: 4px 12px; border-radius: 999px; background: rgba(11, 11, 11, 0.82); color: #fff; font: 600 13px var(--sans); white-space: nowrap; opacity: 0; transition: opacity 0.15s ease, transform 0.15s ease; pointer-events: none; }
+.wall-tile:hover .wall-play, .wall-tile:focus-visible .wall-play { opacity: 1; transform: translate(-50%, 0); }
+.wall-intro { margin: -4px 0 16px; font-size: 15px; }
+#suite.is-playing .puzzle-wall, #suite.is-playing #wall-shuffle, #suite.is-playing .wall-intro { display: none; }
+
+/* ---------------------------------------------------------------- Player (play.js, games/*.js) */
+
+.player { position: relative; padding: 14px 18px 18px; border: 1px solid var(--card-line); border-radius: 20px; background: var(--card); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 10px 28px rgba(28, 92, 171, 0.07); animation: player-in 0.25s ease both; }
+@keyframes player-in { from { opacity: 0; transform: translateY(6px); } }
+.player-head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; margin-bottom: 12px; }
+.player-back { justify-self: start; }
+.player-title { display: flex; align-items: baseline; gap: 10px; }
+.player-title b { font: 600 21px var(--sans); }
+.player-nav { justify-self: end; display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--ink); }
+.player-nav .play-button { width: 30px; height: 30px; padding: 0; font-size: 18px; line-height: 1; }
+.player-counter { min-width: 104px; text-align: center; font-variant-numeric: tabular-nums; }
+.player-body { display: grid; grid-template-columns: minmax(0, 540px) minmax(0, 1fr); gap: 26px; align-items: start; }
+.player.is-loading .player-body { visibility: hidden; }
+
+.player-board { position: relative; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: var(--board); }
+.player-board canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.player-banner { position: absolute; top: 14px; left: 50%; transform: translate(-50%, -8px); padding: 6px 18px; border-radius: 999px; background: var(--good-fill); color: #fff; font: 600 16px var(--sans); box-shadow: 0 8px 24px rgba(11, 107, 11, 0.3); opacity: 0; pointer-events: none; transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.2, 1.6, 0.4, 1); }
+.player.is-solved .player-banner { opacity: 1; transform: translate(-50%, 0); }
+.player.is-solution .player-banner { background: var(--dream-fill); box-shadow: 0 8px 24px rgba(74, 58, 167, 0.3); }
+/* Solving it: confetti over the player (play.js celebrate) and a green glow around the board. */
+.player-confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+.player-board.is-celebrating { animation: solved-glow 1.6s ease; }
+@keyframes solved-glow { 20% { box-shadow: 0 0 0 4px #1f9d55, 0 16px 44px rgba(31, 157, 85, 0.35); } }
+
+.player-side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.player-goal { margin: 0; font-size: 17px; line-height: 1.45; color: var(--ink); }
+.player-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.player-controls:empty { display: none; }
+.player-help { margin: 0; font-size: 15px; line-height: 1.45; color: var(--ink); }
+.player-help:empty { display: none; }
+.player-tape-head { display: flex; justify-content: space-between; margin-top: 4px; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.player-move-count { font-variant-numeric: tabular-nums; }
+.player-tape { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 5px; min-height: 64px; max-height: 148px; overflow-y: auto; padding: 8px; border-radius: 10px; background: var(--surface-2); }
+.player-tape .tape-token { animation: token-in 0.2s ease both; }
+.player.is-solution .player-tape .tape-token.is-current .token-action { background: var(--dream-fill); }
+.player-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.player-next { display: none; }
+.player.is-solved:not(.is-playing-solution) .player-next { display: inline-block; }
+.player-status { min-height: 1.5em; margin: 0; font-size: 15px; color: var(--ink); }
+.player.is-solved:not(.is-solution) .player-status { color: var(--good-ink); font-weight: 600; }
+.player.is-playing-solution .player-controls { opacity: 0.45; pointer-events: none; }
+
+/* Controls the games build. */
+.play-button { padding: 5px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--ink); font: 500 14px var(--sans); cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease; }
+.play-button:hover:not(:disabled) { border-color: var(--ink-3); background: var(--surface-2); }
+.play-button:disabled { opacity: 0.5; cursor: default; }
+.play-button.is-selected { border-color: var(--dream); background: var(--dream-tint); color: var(--dream); }
+.play-button.is-primary { border-color: var(--ink); background: var(--ink); color: var(--surface); }
+/* Filled with a piece's color (set inline); selection is a dark ring around it. */
+.play-button.is-swatch { min-width: 36px; border-color: transparent; font-weight: 600; }
+.play-button.is-swatch:hover:not(:disabled) { border-color: transparent; filter: brightness(0.92); }
+.play-button.is-swatch.is-selected { box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--ink); }
+.play-button.is-primary:hover:not(:disabled) { background: var(--button-hover); }
+.play-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.play-group-label { margin-right: 2px; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.play-input { padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--ink); font: 500 14px var(--mono); min-width: 0; }
+.play-input:focus { outline: none; border-color: var(--dream); box-shadow: 0 0 0 3px rgba(74, 58, 167, 0.15); }
+.play-dpad { display: grid; grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(2, 40px); gap: 4px; }
+.play-dpad .play-button { padding: 0; font-size: 18px; border-radius: 10px; }
+.play-dpad .dpad-up { grid-column: 2; grid-row: 1; }
+.play-dpad .dpad-left { grid-column: 1; grid-row: 2; }
+.play-dpad .dpad-down { grid-column: 2; grid-row: 2; }
+.play-dpad .dpad-right { grid-column: 3; grid-row: 2; }
+
+/* ---------------------------------------------------------------- Curated rollouts (stories.js) */
+
+.subhead { font: 600 24px var(--sans); margin: 44px 0 6px; }
+
+.story-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.chip {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font: 500 14px var(--sans);
+  cursor: pointer;
+}
+.chip[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.story-caption { min-height: 1.6em; max-width: 820px; margin: 14px 0 0; font-size: 15px; color: var(--ink); }
+
+/* Stage: the imagination, which the input turns into, beside reality (never shown to the model). Under
+   the bubble, a fixed spine: the VLM emits each token straight up into a slot, and the decode line of its
+   visual tokens rises from it into the bubble. Older tokens slide left; the prompt feeds the VLM from the
+   left. Probe stages (.taps-vlm, below) move the VLM aside. Compact stages put the prompt beside the VLM
+   (on top, on phones). */
+.story-stage {
+  --card: 236px;
+  --gap: 64px; /* between the boards */
+  --link: 46px; /* between the boards and the token row, spanned by the probe line */
+  --emit: 18px; /* between the token row and the VLM, spanned by the VLM's output arrow */
+  --vlm-half: 36px;
+  --pad-x: 28px;
+  --pad-bottom: 26px;
+  position: relative;
+  isolation: isolate; /* so the probe line can sit under the tokens but above the stage background */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--card) var(--gap) var(--card) minmax(0, 1fr);
+  padding: 24px var(--pad-x) var(--pad-bottom);
+  border: 1px solid var(--card-line);
+  border-radius: 20px;
+  background: linear-gradient(180deg, var(--stage-top), var(--stage-bottom));
+}
+.stage-card { grid-row: 2; align-self: end; margin: 0; }
+.stage-reality { grid-column: 4; transition: opacity 0.5s ease, transform 0.8s var(--scene-ease); }
+.story-stage[data-phase="input"] .stage-reality { opacity: 0; transform: translateX(18px); }
+.stage-mind { grid-column: 2; position: relative; }
+.stage-tokens { grid-row: 3; grid-column: 1 / -1; position: relative; display: flex; align-items: center; min-height: 36px; margin-top: var(--link); }
+.stage-prompt-side, .stage-vlm { grid-row: 4; margin-top: var(--emit); }
+.stage-prompt-side { grid-column: 1 / 3; justify-self: end; display: flex; align-items: center; gap: 10px; padding-right: calc(var(--card) / 2 + var(--vlm-half) + 8px); }
+.stage-vlm { grid-column: 2; justify-self: center; position: relative; }
+.stage-vlm .vlm-chip { display: block; width: calc(var(--vlm-half) * 2); padding: 8px 0; text-align: center; }
+.stage-emit { position: absolute; z-index: -1; bottom: 100%; left: 50%; width: 2px; height: calc(var(--emit) + 4px); margin-left: -1px; background: var(--ink-3); }
+.stage-emit::after { content: ""; position: absolute; top: -1px; left: -4px; border-bottom: 7px solid var(--ink-3); border-left: 5px solid transparent; border-right: 5px solid transparent; }
+/* Solved or not: a badge straddling the bottom edge of the reality board. */
+.stage-verdict { position: absolute; z-index: 1; bottom: 0; left: 50%; transform: translate(-50%, 50%); }
+/* The hero's arrow, kept horizontal at every width (the hero's turns vertical on narrow screens). */
+.stage-arrow { position: relative; flex: none; width: 22px; height: 2px; background: var(--ink-3); }
+.stage-arrow::after { content: ""; position: absolute; right: -6px; top: -4px; border-left: 7px solid var(--ink-3); border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+
+.stage-label { position: relative; min-height: 1.5em; margin-bottom: 12px; font-size: 13px; text-align: center; white-space: nowrap; color: var(--ink); }
+.story-stage:not([data-phase="input"]) .caption-input { opacity: 0; }
+.story-stage:not([data-phase="input"]) .caption-thought { opacity: 1; }
+
+.stage-image {
+  position: relative;
+  aspect-ratio: 1;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 14px 34px rgba(28, 92, 171, 0.11);
+  transition: border-radius 0.9s var(--scene-ease), box-shadow 0.9s ease;
+}
+.stage-frame { position: absolute; inset: 0; border-radius: inherit; background-color: #fff; background-repeat: no-repeat; transition: opacity 0.45s ease, filter 0.5s ease; }
+.frame-imagination { opacity: 0; filter: blur(5px); }
+.story-stage:not([data-phase="input"]) .frame-input { opacity: 0; filter: blur(5px); }
+.story-stage:not([data-phase="input"]) .frame-imagination { opacity: 1; filter: none; }
+.story-stage:not([data-phase="input"]) .stage-mind .stage-image {
+  border-radius: 30%;
+  box-shadow: 0 0 0 8px var(--halo), 0 0 70px rgba(74, 58, 167, 0.3), 0 18px 46px rgba(74, 58, 167, 0.16);
+}
+/* The previous imagined frame, fading out over the new one (stories.js developFrame). */
+.frame-previous { position: absolute; inset: 0; border-radius: inherit; background-repeat: no-repeat; pointer-events: none; }
+
+/* The decode line from the newest token straight up into the bubble (probe stages restyle it as the probe,
+   below); a frozen probe is dashed. A dot rides it toward the bubble with each read-out. */
+.stage-probe { position: absolute; z-index: -1; top: 100%; left: 50%; width: 2px; height: calc(var(--link) + 12px); margin-left: -1px; transform: scaleY(0); transform-origin: bottom; transition: transform 0.35s var(--scene-ease); }
+.story-stage.has-probe .stage-probe { transform: none; }
+.probe-line { position: absolute; inset: 0; background: var(--dream); }
+.probe-frozen .probe-line { background: repeating-linear-gradient(0deg, var(--dream) 0 4px, transparent 4px 8px); }
+.probe-line::after { content: ""; position: absolute; top: -1px; left: -4px; border-bottom: 7px solid var(--dream); border-left: 5px solid transparent; border-right: 5px solid transparent; }
+.probe-dot { position: absolute; bottom: 0; left: -3px; width: 8px; height: 8px; border-radius: 50%; background: #c9bcff; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 0 10px rgba(74, 58, 167, 0.8); opacity: 0; }
+.probe-label { position: absolute; top: 50%; left: 10px; transform: translateY(-50%); font: 600 10px var(--sans); letter-spacing: 0.07em; text-transform: uppercase; white-space: nowrap; color: var(--dream); }
+
+/* Probe stages: the probe reads the VLM's hidden states, at every layer, where each action ends, so it
+   leaves the VLM's side (a bracket over its layers) and runs straight to the bubble; the tokens rise out of
+   the VLM's top into a row above it. The VLM, probe, tokens, and prompt share the boards' row, placed
+   from its bottom edge: --tokens-bottom is where the token row ends. */
+.story-stage.taps-vlm {
+  --card: 200px;
+  --gap: 56px;
+  --vlm-width: 116px;
+  --vlm-height: 84px;
+  --probe-gap: 140px;
+  --tokens-bottom: calc(var(--card) - 36px);
+  grid-template-columns: minmax(0, 1fr) var(--vlm-width) var(--probe-gap) var(--card) var(--gap) var(--card);
+}
+.taps-vlm .stage-mind { grid-column: 4; }
+.taps-vlm .stage-reality { grid-column: 6; }
+.taps-vlm .stage-tokens { grid-row: 2; grid-column: 1 / 4; align-self: end; height: 36px; min-height: 0; margin: 0 0 var(--tokens-bottom); }
+.story-stage.taps-vlm:not(.is-compact) .stage-prompt-side { grid-row: 2; grid-column: 1; align-self: end; height: var(--card); margin: 0; padding: 0 12px 0 0; }
+.taps-vlm .stage-vlm { grid-row: 2; grid-column: 2; align-self: end; justify-self: stretch; margin: 0 0 calc((var(--card) - var(--vlm-height)) / 2); }
+.taps-vlm .stage-emit { height: calc(var(--tokens-bottom) - (var(--card) + var(--vlm-height)) / 2 + 4px); }
+/* The VLM as a stack of layers. */
+.taps-vlm .stage-vlm .vlm-chip {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: var(--vlm-height);
+  padding: 0;
+  background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.13) 0 1px, transparent 1px 11px) center / calc(100% - 20px) calc(100% - 20px) no-repeat, #3d4247;
+}
+.vlm-tap { position: absolute; left: 100%; top: 10px; bottom: 10px; width: 8px; margin-left: 4px; border: 2px solid var(--dream); border-left: 0; border-radius: 0 3px 3px 0; opacity: 0; transition: opacity 0.35s ease; }
+.story-stage.has-probe .vlm-tap { opacity: 1; }
+/* The probe line: from the bracket's middle to the bubble's edge, level with both centers. */
+.taps-vlm .stage-probe { position: relative; z-index: auto; top: auto; left: auto; grid-row: 2; grid-column: 3; align-self: end; width: auto; height: 2px; margin: 0 10px calc(var(--card) / 2 - 1px) 12px; transform: scaleX(0); transform-origin: left; }
+.taps-vlm.has-probe .stage-probe { transform: none; }
+.taps-vlm .stage-probe.probe-frozen .probe-line { background: repeating-linear-gradient(90deg, var(--dream) 0 4px, transparent 4px 8px); }
+.taps-vlm .probe-line::after { top: -4px; left: auto; right: -2px; border: 5px solid transparent; border-right: 0; border-left: 7px solid var(--dream); }
+.taps-vlm .probe-dot { top: -3px; bottom: auto; left: 0; margin-left: -4px; }
+.taps-vlm .probe-label { top: auto; bottom: 9px; left: 50%; transform: translateX(-50%); }
+.probe-sublabel { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); font-size: 11px; white-space: nowrap; color: var(--ink); }
+.story-stage.taps-vlm.is-compact {
+  --card: 104px;
+  --gap: 36px;
+  --vlm-width: 66px;
+  --vlm-height: 64px;
+  --probe-gap: 80px;
+  --tokens-bottom: calc(var(--card) + 4px);
+  grid-template-columns: minmax(0, 1fr) var(--vlm-width) var(--probe-gap) var(--card) var(--gap) var(--card);
+}
+.taps-vlm.is-compact .stage-vlm .vlm-chip { background-size: calc(100% - 14px) calc(100% - 16px), auto; }
+.taps-vlm.is-compact .probe-label { width: min-content; font-size: 9px; line-height: 1.25; letter-spacing: 0.05em; text-align: center; white-space: normal; }
+.taps-vlm.is-compact .probe-sublabel { display: none; }
+.taps-vlm.is-compact .stage-probe { margin-left: 10px; margin-right: 8px; }
+/* A compact visual-token stage keeps its boards on the right, leaving the older tokens room on the left. */
+.story-stage.decodes-tokens.is-compact { grid-template-columns: minmax(0, 1fr) var(--card) var(--gap) var(--card) 0; }
+
+.stage-prompt { display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 0; padding: 6px 14px 8px; background: var(--card); border-radius: 14px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 8px 22px rgba(28, 92, 171, 0.1); }
+.stage-question { font: italic 500 16px/1.25 var(--sans); text-align: center; }
+
+.token-tape { flex: 1; min-width: 0; overflow: hidden; }
+.slot-tape { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 56px); mask-image: linear-gradient(90deg, transparent 0, #000 56px); }
+.slot-tape .tape-token > * { transition: opacity 0.3s ease; }
+.slot-tape .tape-token[data-age="2"] > * { opacity: 0.75; }
+.slot-tape .tape-token[data-age="3"] > * { opacity: 0.5; }
+.slot-tape .tape-token[data-age="4"] > * { opacity: 0.3; }
+.token-tape.is-overflowing { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 60px); mask-image: linear-gradient(90deg, transparent 0, #000 60px); }
+.tape-track { display: inline-flex; align-items: center; gap: 6px; padding: 3px; white-space: nowrap; } /* padding: room for the current token's ring */
+.tape-token { display: inline-flex; align-items: center; gap: 5px; animation: token-in 0.3s ease both; }
+@keyframes token-in { from { opacity: 0; } to { opacity: 1; } } /* fade in place; older tokens shift (shiftTokens) */
+.tape-token .token-action { transition: background 0.25s ease, color 0.25s ease; }
+.tape-token.is-current .token-action { background: var(--dream-fill); color: #fff; }
+/* Moves that only happened in the model's imagination: blocked on the real board, which flashes. */
+.tape-token.is-invalid .token-action { background: var(--bad-bg); color: var(--bad-ink); }
+.tape-token.is-invalid.is-current .token-action { background: #c23b3b; color: #fff; }
+.is-blocked { animation: blocked 0.7s ease; }
+@keyframes blocked { 30% { box-shadow: 0 0 0 3px #c23b3b, 0 14px 34px rgba(194, 59, 59, 0.2); } }
+/* Visual chain-of-thought writes each imagined state as visual tokens: square, unlike the probe's bubble. */
+.token-visual { width: 30px; height: 30px; border-radius: 5px; background-color: #fff; background-repeat: no-repeat; box-shadow: 0 0 0 1.5px rgba(74, 58, 167, 0.45); }
+.tape-token.is-current .token-visual { box-shadow: 0 0 0 2.5px var(--dream), 0 0 14px rgba(74, 58, 167, 0.45); }
+
+.stage-outcome-slot { flex: none; display: flex; justify-content: flex-end; }
+.stage-outcome { display: inline-flex; align-items: center; gap: 8px; animation: outcome-pop 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+/* An answer is the model's last token (purple, as in the hero), badged right or wrong; action puzzles end in solved or not. */
+.stage-outcome .token-answer { align-items: center; padding: 3px 4px 4px 14px; white-space: nowrap; }
+.stage-outcome .token-answer b { font-size: 20px; line-height: 1.2; }
+.outcome-mark { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; font: 700 13px var(--sans); }
+.is-good .outcome-mark { background: var(--surface); color: var(--good-ink); }
+.is-bad .outcome-mark { background: var(--surface); color: var(--bad-ink); }
+.outcome-verdict { padding: 4px 16px 6px; border-radius: 999px; font: 600 19px var(--sans); white-space: nowrap; color: #fff; }
+.is-good .outcome-verdict { background: #17803a; box-shadow: 0 6px 18px rgba(23, 128, 58, 0.3); }
+.is-bad .outcome-verdict { background: #c23b3b; box-shadow: 0 6px 18px rgba(194, 59, 59, 0.3); }
+@keyframes outcome-pop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: none; } }
+
+/* Mechanism cards: compact stages, with the prompt on its own row and the boards against the left. */
+.mechanisms { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+/* Players pinned to the bottom, so the two animations line up however long each description runs. */
+.mechanism-card { display: flex; flex-direction: column; padding: 18px 20px 16px; border-radius: 20px; background: var(--surface-2); }
+.mechanism-card > .story-player { margin-top: auto; }
+.mechanism-card .story-caption { display: none; }
+.mechanism-card h3 { margin: 0 0 4px; }
+.mechanism-card > p { margin: 0 0 14px; font-size: 15px; color: var(--ink-2); }
+.story-stage.is-compact { --card: 124px; --gap: 52px; --link: 36px; --vlm-half: 30px; --pad-x: 16px; --pad-bottom: 16px; grid-template-columns: 0 var(--card) var(--gap) var(--card) minmax(0, 1fr); padding: 72px var(--pad-x) var(--pad-bottom); background: var(--card); }
+.story-stage.is-compact .stage-prompt-side { grid-area: auto; position: absolute; top: 14px; left: var(--pad-x); margin: 0; padding: 0; }
+.story-stage.is-compact .stage-prompt-side .stage-arrow { display: none; }
+/* Above phone widths, the prompt sits next to the VLM it feeds: under it in a probe stage (whose VLM is
+   level with the boards), to its right in a visual-token stage (whose VLM sits under the bubble). */
+@media (min-width: 821px) {
+  .story-stage.is-compact { padding-top: 22px; }
+  .story-stage.is-compact .stage-prompt-side { position: static; }
+  .story-stage.is-compact .stage-prompt-side .stage-arrow { display: block; }
+  .story-stage.taps-vlm.is-compact .stage-prompt-side { grid-row: 3; grid-column: 2; justify-self: center; flex-direction: column-reverse; gap: 4px; width: max-content; margin-top: -16px; }
+  .story-stage.taps-vlm.is-compact .stage-arrow { width: 2px; height: 18px; }
+  .story-stage.taps-vlm.is-compact .stage-arrow::after { top: -6px; right: auto; left: -4px; border: 5px solid transparent; border-top: 0; border-bottom: 7px solid var(--ink-3); }
+  .story-stage.decodes-tokens.is-compact .stage-prompt-side { grid-row: 4; grid-column: 2 / -1; justify-self: start; align-self: start; flex-direction: row-reverse; margin: calc(var(--emit) - 6px) 0 0 calc(var(--card) / 2 + var(--vlm-half) + 8px); }
+  .story-stage.decodes-tokens.is-compact .stage-arrow::after { right: auto; left: -6px; border-left: 0; border-right: 7px solid var(--ink-3); }
+}
+.story-stage.is-compact .stage-question { font-size: 14px; }
+.story-stage.is-compact .stage-label { margin-bottom: 8px; font-size: 11px; white-space: normal; }
+.story-stage.is-compact .stage-vlm .vlm-chip { padding: 6px 0; font-size: 14px; }
+
+/* Head to head: one lane per method. */
+.lane-board { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px; border: 1px solid var(--card-line); border-radius: 20px; background: linear-gradient(180deg, var(--stage-top), var(--stage-bottom)); }
+.lane-board > .stage-prompt { align-self: flex-start; margin-bottom: 4px; }
+.lane { display: grid; grid-template-columns: 170px 96px 96px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 10px 14px; border-radius: 14px; background: var(--card); }
+.lane-label b { display: block; font-size: 15px; }
+.lane-label span { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dream); }
+.lane-cell { margin: 0; }
+.lane-cell figcaption { margin-top: 4px; font-size: 11px; text-align: center; color: var(--ink); }
+.lane-frame { position: relative; aspect-ratio: 1; background-color: #fff; background-repeat: no-repeat; border-radius: 10px; box-shadow: 0 0 0 1px var(--line); }
+.lane-bubble { border-radius: 26%; box-shadow: 0 0 0 1.5px rgba(74, 58, 167, 0.35), 0 0 16px rgba(74, 58, 167, 0.22); }
+.lane .stage-outcome-slot { min-width: 0; }
+
+/* ---------------------------------------------------------------- Results */
+
+.results-average { max-width: 760px; margin-bottom: 30px; }
+.chart-title { font: 600 17px var(--sans); margin: 0 0 10px; }
+.bar-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 3px 60px 3px 0;
+}
+.bar-label { font-size: 14px; color: var(--ink); }
+.bar-track { position: relative; height: 18px; }
+.bar { height: 100%; border-radius: 0 4px 4px 0; }
+.bar-value { position: absolute; top: 50%; transform: translateY(-50%); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.bar-tooltip {
+  display: none;
+  position: absolute;
+  left: 220px;
+  bottom: calc(100% + 2px);
+  padding: 6px 10px;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 13px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 2;
+  pointer-events: none;
+}
+.bar-row:hover .bar-tooltip { display: block; }
+.bar-row:hover .bar { filter: brightness(0.92); }
+.chart-legend { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 13px; color: var(--ink); margin: 0 0 14px; }
+.swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-left: 10px; }
+.swatch:first-child { margin-left: 0; }
+
+/* Per task: a small chart per task, the methods in the legend's order. */
+.results-games { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.result-game { background: var(--card); border: 1px solid var(--card-line); border-radius: 10px; padding: 10px 12px 12px; }
+.result-game-title { font: 600 14px var(--sans); margin: 0 0 6px; }
+.bar-row.is-compact { grid-template-columns: 1fr; padding: 1.5px 36px 1.5px 0; }
+.bar-row.is-compact .bar-track { height: 10px; }
+.bar-row.is-compact .bar-value { font-size: 11px; font-weight: 500; color: var(--ink-2); }
+.bar-row.is-compact .bar-tooltip { left: 0; font-size: 12px; }
+
+/* ---------------------------------------------------------------- Citation, footer */
+
+.bibtex {
+  background: var(--surface-2);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  overflow-x: auto;
+  font: 14px/1.55 var(--mono);
+}
+
+main { padding-bottom: 72px; } /* room below the last section, now that there's no footer */
+
+/* ---------------------------------------------------------------- How the probe works (probe_detail.js) */
+
+.viewer {
+  width: min(1180px, 96vw);
+  max-height: 94vh;
+  border: none;
+  border-radius: 16px;
+  padding: 18px 22px 14px;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+}
+.viewer::backdrop { background: rgba(10, 10, 20, 0.55); }
+.viewer-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+.viewer-head h2 { font-size: 24px; margin: 0; }
+.probe-detail { width: min(900px, 96vw); }
+.probe-figure svg { display: block; width: 100%; height: auto; }
+.probe-notes { margin: 14px 0 4px; font-size: 15px; color: var(--ink); }
+.probe-notes + .probe-notes { margin-top: 8px; }
+.inline-link { padding: 0; font-size: inherit; white-space: nowrap; }
+.taps-vlm .probe-label[data-probe-detail] { cursor: pointer; }
+.taps-vlm .probe-label[data-probe-detail]:hover { text-decoration: underline dotted; text-underline-offset: 3px; }
+
+/* ---------------------------------------------------------------- Small screens */
+
+@media (max-width: 1100px) {
+  .scene-response { flex-direction: column; gap: 8px; }
+  .scene-arrow { width: 2px; height: 16px; }
+  .scene-arrow::after { right: -4px; top: auto; bottom: -6px; border-top: 7px solid var(--ink-3); border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: none; }
+  .token-stream { overflow: visible; }
+  .stream-track { width: auto; flex-wrap: wrap; justify-content: center; }
+  .thought-dots { display: none; }
+  .scene-replay { margin-top: 26px; } /* room for the answer note, under the chip on the tape's last line */
+}
+
+@media (max-width: 820px) {
+  body { font-size: 16px; }
+  .scene-sheep { gap: 14px; }
+  .scene-card { width: min(44vw, 210px); }
+  .scene-response { margin-top: 14px; }
+  .token-image { width: 34px; height: 34px; }
+  .token-action { font-size: 12px; padding: 3px 6px; }
+  .answer-group { align-items: center; flex-basis: 100%; margin: 6px 0 0; transform-origin: center; }
+  .hero-scene { --intro-sheep-scale: 1.06; --intro-sheep-shift: 10px; --intro-prompt-scale: 1.3; }
+  .puzzle-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .wall-tile { border-radius: 16px; }
+  .player { padding: 10px 10px 14px; border-radius: 16px; }
+  .player-head { grid-template-columns: 1fr auto; }
+  .player-title { grid-column: 1 / -1; grid-row: 2; }
+  .player-counter { min-width: 0; }
+  .player-body { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .story-stage, .story-stage.is-compact { --gap: 40px; --link: 40px; --pad-x: 14px; --pad-bottom: 14px; grid-template-columns: 0 minmax(0, 1fr) var(--gap) minmax(0, 1fr) 0; padding: 72px var(--pad-x) var(--pad-bottom); }
+  .story-stage .stage-prompt-side { grid-area: auto; position: absolute; top: 14px; left: 14px; max-width: calc(100% - 28px); margin: 0; padding: 0; }
+  .story-stage .stage-prompt-side .stage-arrow { display: none; }
+  .stage-label { font-size: 11px; white-space: normal; }
+  .story-stage { --vlm-half: 30px; }
+  .story-chips { flex-wrap: nowrap; overflow-x: auto; margin-inline: -20px; padding-inline: 20px; scrollbar-width: none; }
+  .story-chips .chip { flex: none; }
+  .mechanisms { grid-template-columns: 1fr; }
+  .lane { grid-template-columns: 76px 76px minmax(0, 1fr); gap: 8px 10px; }
+  .lane-label { grid-column: 1 / -1; }
+  .lane .stage-outcome-slot { grid-column: 1 / -1; justify-content: flex-start; }
+  .probe-figure { overflow-x: auto; }
+  .probe-figure svg { min-width: 600px; }
+  .bar-row { grid-template-columns: 130px 1fr; padding-right: 52px; }
+  .bar-tooltip { left: 140px; }
+  /* Probe stages stack: the probe rises from the VLM's top into the bubble, and the tokens drop out of its
+     bottom, so the two paths still never touch. */
+  .story-stage.taps-vlm, .story-stage.taps-vlm.is-compact { --vlm-height: 56px; grid-template-columns: 0 minmax(0, 1fr) var(--gap) minmax(0, 1fr) 0; }
+  .story-stage.taps-vlm .stage-mind { grid-column: 2; }
+  .story-stage.taps-vlm .stage-reality { grid-column: 4; }
+  .story-stage.taps-vlm:not(.is-compact) .stage-prompt-side { grid-area: auto; height: auto; padding: 0; }
+  .story-stage.taps-vlm .stage-probe { grid-row: 3; grid-column: 2; justify-self: center; align-self: auto; width: 2px; height: var(--link); margin: 6px 0 0; transform: scaleY(0); transform-origin: bottom; }
+  .story-stage.taps-vlm.has-probe .stage-probe { transform: none; }
+  .story-stage.taps-vlm .stage-probe.probe-frozen .probe-line { background: repeating-linear-gradient(0deg, var(--dream) 0 4px, transparent 4px 8px); }
+  .story-stage.taps-vlm .probe-line::after { top: -1px; left: -4px; right: auto; border: 5px solid transparent; border-top: 0; border-bottom: 7px solid var(--dream); }
+  .story-stage.taps-vlm .probe-dot { top: auto; bottom: 0; left: -3px; margin-left: 0; }
+  .story-stage.taps-vlm .probe-label { top: calc(50% - 15px); bottom: auto; left: 10px; width: auto; transform: none; text-align: left; white-space: nowrap; }
+  .story-stage.taps-vlm .probe-sublabel { display: block; top: calc(50% + 1px); left: 10px; transform: none; }
+  .story-stage.taps-vlm .stage-vlm { grid-row: 4; grid-column: 2; align-self: auto; justify-self: center; width: 96px; margin: 0; }
+  .story-stage.taps-vlm .vlm-tap { display: none; }
+  .story-stage.taps-vlm .stage-emit { top: 100%; bottom: auto; height: calc(var(--emit) + 4px); }
+  .story-stage.taps-vlm .stage-emit::after { top: auto; bottom: -1px; border-bottom: 0; border-top: 7px solid var(--ink-3); }
+  .story-stage.taps-vlm .stage-tokens { grid-row: 5; grid-column: 1 / -1; align-self: auto; height: auto; min-height: 36px; margin: var(--emit) 0 0; }
+}

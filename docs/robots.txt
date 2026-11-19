@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://apple-aiml-research.github.io/ml-mental-imagery/sitemap.xml

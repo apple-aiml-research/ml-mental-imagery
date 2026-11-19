@@ -1,0 +1,11 @@
+{#- vLLM chat template for InternVL3.5: the training prompt of model.families.InternVL.build_prompt_text. -#}
+{%- for message in messages -%}
+{%- set ns = namespace(c='') -%}
+{%- for item in message['content'] -%}
+{%- if item['type'] == 'text' -%}{%- set ns.c = ns.c + item['text'] -%}
+{%- elif item['type'] in ['image', 'image_url'] -%}{%- set ns.c = ns.c + '<IMG_CONTEXT>\n' -%}
+{%- endif -%}
+{%- endfor -%}
+{{- '<|im_start|>' + message['role'] + '\n' + ns.c + '<|im_end|>\n' -}}
+{%- endfor -%}
+{{- '<|im_start|>assistant\n<think>\n' -}}

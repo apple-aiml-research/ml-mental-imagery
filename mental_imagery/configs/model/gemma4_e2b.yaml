@@ -1,0 +1,8 @@
+# The base (pretrained, not instruction-tuned) Gemma 4 E2B.
+name: google/gemma-4-E2B
+revision: d29ff6b45f081a49ee2733a859c9c9c2d95d1a6f
+short_name: gemma4_e2b
+family: gemma4
+dtype: bfloat16
+attn_implementation: sdpa     # its full-attention layers have head_dim 512, above FlashAttention-2's limit
+new_token_init: mean_noise

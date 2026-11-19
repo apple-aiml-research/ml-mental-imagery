@@ -1,0 +1,30 @@
+# uv run python -m mental_imagery.prepare.train_fsq fsq=board_256 | board_multires
+defaults:
+  - model: qwen3_5_0_8b   # only its tokenizer is used, to drive the engine
+  - games: benchmark
+  - fsq: board_256
+  - callbacks: default
+  - _self_
+  - override hydra/job_logging: disabled
+  - override hydra/hydra_logging: disabled
+
+paths:
+  artifacts_dir: artifacts
+
+engine:                      # only rendering is used; boards are rendered at max(render_resolution, resolutions)
+  render_resolution: 256
+  action_limit_multiplier: 1.5
+
+levels: [5, 5, 5, 5, 5, 5]   # 5^6 = 15,625 codes
+iterations: 50000
+batch_size: 200
+lr: 3.0e-5
+entropy_weight: 0.005        # codebook-utilization regularizer
+save_every: 5000
+log_every: 50
+seed: 42
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null

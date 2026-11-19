@@ -1,0 +1,81 @@
+# @package _global_
+# The twelve benchmark tasks (nine puzzle families; tangram, mental_rotation, and
+# mental_rotation_2d also appear as yes/no "certificate" variants).
+# Used for training and evaluation. Scoring: the five question-answering
+# tasks (the three yes/no certificate variants, anagram, and character recognition)
+# count as solved when the final answer is right, whatever the intermediate moves;
+# the other seven count as solved when the final state is solved.
+# exclude_evaluation_seeds: 200 keeps each task's evaluation puzzles (seeds 0-199) out of
+# training: a training puzzle identical to one of them is replaced by the next one drawn.
+games:
+  - name: tangram
+    exclude_evaluation_seeds: 200
+    params:
+      num_pieces_range: [4, 6]
+      canvas_size_range: [4, 7]
+  - name: tangram
+    label: tangram_certificate
+    exclude_evaluation_seeds: 200
+    params:
+      num_pieces_range: [4, 6]
+      canvas_size_range: [4, 7]
+      certificate_game: 1
+  - name: mental_rotation
+    exclude_evaluation_seeds: 200
+    params:
+      num_cubes_range: [7, 11]
+      increment: 15
+      zoom_pct: 150
+      min_solve_steps: 5
+  - name: mental_rotation
+    label: mental_rotation_certificate
+    exclude_evaluation_seeds: 200
+    params:
+      num_cubes_range: [7, 11]
+      increment: 15
+      certificate_game: 1
+      zoom_pct: 150
+      min_solve_steps: 5
+  - name: mental_rotation_2d
+    exclude_evaluation_seeds: 200
+    params:
+      num_cells: 7
+      increment: 15
+  - name: mental_rotation_2d
+    label: mental_rotation_2d_certificate
+    exclude_evaluation_seeds: 200
+    params:
+      num_cells: 7
+      increment: 15
+      certificate_game: 1
+  - name: jigsaw
+    exclude_evaluation_seeds: 200
+    params:
+      grid_size_range: [2, 3]
+  - name: anagram
+    exclude_evaluation_seeds: 200
+    params:
+      word_len_range: [6, 10]
+      min_swaps: 5
+  - name: character_recognition
+    exclude_evaluation_seeds: 200
+    params:
+      num_pieces_range: [6, 7]
+      grid_size_range: [30, 36]
+      slot_grid_dim: 4
+  - name: sokoban
+    exclude_evaluation_seeds: 200
+    params:
+      grid_size_range: [8, 12]
+      num_boxes_range: [2, 5]
+  - name: bloxorz
+    exclude_evaluation_seeds: 200
+    params:
+      grid_size_range: [8, 12]
+      fill_range: [20, 50]
+      num_fragile_tiles_range: [0, 3]
+  - name: rush_hour
+    exclude_evaluation_seeds: 200
+    params:
+      grid_size_range: [6, 8]
+      num_cars_range: [8, 14]

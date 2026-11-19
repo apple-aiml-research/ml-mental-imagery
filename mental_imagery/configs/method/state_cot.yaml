@@ -1,0 +1,5 @@
+# @package _global_
+# State CoT: the model writes each board as a compact JSON state
+# description before its action, <board>{"g":"...","moves":0}</board><action>...</action>.
+text_cot:
+  enabled: true

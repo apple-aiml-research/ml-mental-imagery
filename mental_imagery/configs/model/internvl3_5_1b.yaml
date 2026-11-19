@@ -1,0 +1,8 @@
+# The native transformers conversion ("-HF"), not the remote-code repository OpenGVLab/InternVL3_5-1B.
+name: OpenGVLab/InternVL3_5-1B-HF
+revision: 9191dbccf312b537016f041b25d61c72e7c5c9f3
+short_name: internvl3_5_1b
+family: internvl
+dtype: bfloat16
+attn_implementation: flash_attention_2
+new_token_init: mean_noise

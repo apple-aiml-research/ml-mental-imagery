@@ -1,0 +1,29 @@
+# @package _global_
+# Qwen3.5-35B-A3B: Visual CoT, 64x64 boards (4x4 LlamaGen tokens per board).
+defaults:
+  - override /model: qwen3_5_35b_a3b
+  - override /method: visual_cot
+
+run_name: qwen3_5_35b_a3b/visual_cot_64
+
+visual_tokens:
+  grid_size: 4
+  loss_weight: 0.05
+
+training:
+  per_gpu_batch_size: 8
+  gradient_accumulation_steps: 8
+  total_steps: 100000
+
+optimizer:
+  lr: 3.0e-5
+
+scheduler:
+  warmup_steps: 125
+
+fsdp:
+  reshard_after_forward: true
+  activation_checkpointing: true
+
+checkpoint:
+  save_every_steps: 4000

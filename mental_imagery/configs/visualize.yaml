@@ -1,0 +1,16 @@
+# uv run python -m mental_imagery.visualize checkpoint=<run_dir>/checkpoints/step_025000
+# Renders the boards a Visual CoT or visual-head checkpoint imagines in its evaluation episodes
+# (evaluate it first with save_generations=true).
+defaults:
+  - _self_
+  - override hydra/job_logging: disabled
+  - override hydra/hydra_logging: disabled
+
+checkpoint: ???
+output_dir: ${checkpoint}/eval/visualize
+num_episodes: null    # per game, the lowest seeds; null = every evaluated episode
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null

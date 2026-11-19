@@ -1,0 +1,27 @@
+# uv run python -m mental_imagery.prepare.embed_init model=qwen3_5_9b visual_tokens=llamagen | fsq
+# Codes are computed at native resolution, so one table serves the 64x64 and 128x128 runs.
+defaults:
+  - engine: default
+  - model: qwen3_5_9b
+  - games: benchmark
+  - visual_tokens: llamagen
+  - _self_
+  - override hydra/job_logging: disabled
+  - override hydra/hydra_logging: disabled
+
+paths:
+  artifacts_dir: artifacts
+
+output_path: ${paths.artifacts_dir}/embed_init/${model.short_name}_${visual_tokens.tokenizer}.pt
+visual_tokens:
+  enabled: true
+  grid_size: null
+num_episodes: 10000
+batch_size: 32
+vision_batch_size: 64
+max_tokens: 1024             # teacher-forcing budget (boards beyond it are not collected)
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null

@@ -1,0 +1,4 @@
+seed: 10000                   # training puzzle seeds start here; evaluation uses 0..N-1
+render_resolution: 256
+action_limit_multiplier: 1.5  # an episode ends after ceil(1.5 * optimal) actions
+prefetch: 2                   # batches generated ahead on background threads
